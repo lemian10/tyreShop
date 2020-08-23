@@ -4,27 +4,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
 public class Product {
+    private int id;
     private String name;
     private String price;
-    private boolean tyre;
-    private float width;
-    private int height;
+    private List<String> place;
 
-    Product (String name, boolean tyre, float width, int height) {
+    Product (String name) {
         this.name = name;
-        this.tyre = tyre;
-        this.width = width;
-        this.height = height;
-    }
-
-    void setWidth(float width) {
-        int koeficientUmnojWisoti = 2;
-        this.width = width;
-        this.height = (int) (width * koeficientUmnojWisoti);
     }
 
     @Override

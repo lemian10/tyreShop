@@ -10,7 +10,7 @@ public class Shop {
     public List<Product> getSaleTop(int size) {
         List<Product> products = new ArrayList<>();
         for(Product p: productsInShop) {
-            if(p.isTyre()) {
+            if(p instanceof Disk) { //p.isTyre() ==== p.isTyre() == true | !p.isTyre() ==== p.isTyre() == false
                 products.add(p);
             }
 
@@ -27,8 +27,10 @@ public class Shop {
 
     public Product getBestTyre() {
         for(Product product: productsInShop) {
-            if(product.isTyre() || (product.getWidth() > 180 && product.getWidth() <190) ) {
-                return product;
+            if(product instanceof Tyre ) {
+                if(((Tyre) product).getWidth() > 180 && ((Tyre) product).getWidth() <190) {
+                    return product;
+                }
             }
         }
 
@@ -50,23 +52,22 @@ public class Shop {
 
     public Shop() {
         List<Product> products = new ArrayList<>();
-        Product p = new Product();
+        Tyre p = new Tyre();
         p.setName("Шина Cordiant");
         p.setWidth(205);
         p.setPrice("2960");
-        p.setTyre(true);
         p.setHeight(55);
 
         products.add(p);
-        products.add(new Product("Диск LA MZ43", false, 7.5f,0));
-        products.add(new Product("Диск  x-Race AF-02", false, 6.0f,0));
-        products.add(new Product("Шина Goodyer Eagle", true, 185,70));
-        products.add(new Product("Диск  Khomen Solaris", false, 6.0f,0));
-        products.add(new Product("Шина MAXXIS MT-764", true, 10.5f, 31));
-        products.add(new Product("Шина Mazzini Mud", true, 285, 70));
-        products.add(new Product("Шина Yokohama G075",true, 255, 50));
-        products.add(new Product("Диск Alcasta M18", false, 6.5f, 0));
-        products.add(new Product("Диск Megami MGM-7", false, 6.0f, 0));
+        products.add(new Disk("Диск LA MZ43",  7.5f));
+        products.add(new Disk("Диск  x-Race AF-02", 6.0f));
+        products.add(new Tyre("Шина Goodyer Eagle",  185,70));
+        products.add(new Disk("Диск  Khomen Solaris",  6.0f));
+        products.add(new Tyre("Шина MAXXIS MT-764",  10.5f, 31));
+        products.add(new Tyre("Шина Mazzini Mud",  285, 70));
+        products.add(new Tyre("Шина Yokohama G075", 255, 50));
+        products.add(new Disk("Диск Alcasta M18",  6.5f));
+        products.add(new Disk("Диск Megami MGM-7",  6.0f));
 
 
         System.out.println("Создаётся магазин");
@@ -80,7 +81,7 @@ public class Shop {
 //        for (Product product : shop.getSaleTop()) {
 //            System.out.println(product);
 //        }
-        for (Product product : shop.getSaleTop( 1)) {
+        for (Product product : shop.getSaleTop( 3)) {
             System.out.println(product);
         }
 
