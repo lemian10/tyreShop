@@ -85,14 +85,6 @@ public class Shop {
             System.out.println(product);
         }
 
-//        if(shop.getAllProduct().equals(shop.getSaleTop())) {
-//            System.out.println("Списки равны");
-//        }else{
-//            System.out.println("Списки различны");
-//        }
-
-
-
         System.out.println("Лучшая шина: " + shop.getBestTyre());
     }
 }
