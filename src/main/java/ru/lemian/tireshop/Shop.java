@@ -2,26 +2,49 @@ package ru.lemian.tireshop;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Shop {
     private List<Product> productsInShop;
 
 
-    public List<Product> getSaleTop(int size) {
+    public List<Product> getSaleTop(int diskPosition, int batteryPosition, int tyrePosition) {
         List<Product> products = new ArrayList<>();
+
+        List<Product> productsDisk = new ArrayList<>();
+        List<Product> productsBattery = new ArrayList<>();
+        List<Product> productsTyre = productsInShop
+                .stream()
+                .filter(i -> i instanceof Tyre)
+                .collect(Collectors.toList());
+
         for(Product p: productsInShop) {
-            if(p instanceof Disk) { //p.isTyre() ==== p.isTyre() == true | !p.isTyre() ==== p.isTyre() == false
-                products.add(p);
+            if(p instanceof Disk) {
+                productsDisk.add(p);
+
             }
-
-            if (products.size() == size) {
-                break;
+//            if (p instanceof Tyre){
+//                productsTyre.add(p);
+//            }
+            if (p instanceof Battery){
+                productsBattery.add(p);
             }
-
-
         }
-        return products;
 
+        if (productsTyre.size() > tyrePosition) {
+            products.add(productsTyre.get(tyrePosition-1));
+        }else {
+            System.out.println("Нема так много, есть " + productsTyre.size()+ ", а не " + tyrePosition);
+        }
+
+        if(productsDisk.size() > diskPosition) {
+            products.add(productsDisk.get(diskPosition - 1));
+        }else{
+            System.out.println("У меня нет столько дисков, у меня всего " + productsDisk.size() + ", а ты хочешь " + diskPosition);
+        }
+        products.add(productsBattery.get(batteryPosition-1));
+
+        return products;
     }
 
 
@@ -60,6 +83,7 @@ public class Shop {
 
         products.add(p);
         products.add(new Disk("Диск LA MZ43",  7.5f));
+        products.add(new Battery("Аккумулятор Toplo"));
         products.add(new Disk("Диск  x-Race AF-02", 6.0f));
         products.add(new Tyre("Шина Goodyer Eagle",  185,70));
         products.add(new Disk("Диск  Khomen Solaris",  6.0f));
@@ -68,6 +92,7 @@ public class Shop {
         products.add(new Tyre("Шина Yokohama G075", 255, 50));
         products.add(new Disk("Диск Alcasta M18",  6.5f));
         products.add(new Disk("Диск Megami MGM-7",  6.0f));
+        products.add(new Battery("Аккумулятор Барс"));
 
 
         System.out.println("Создаётся магазин");
@@ -81,7 +106,7 @@ public class Shop {
 //        for (Product product : shop.getSaleTop()) {
 //            System.out.println(product);
 //        }
-        for (Product product : shop.getSaleTop( 3)) {
+        for (Product product : shop.getSaleTop( 10, 1, 2)) {
             System.out.println(product);
         }
 
