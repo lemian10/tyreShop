@@ -1,10 +1,15 @@
 package ru.lemian.tireshop;
 
+import javafx.geometry.HorizontalDirection;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Shop {
+    /**
+     * Ссылка на список товаров в магазине в данном классе
+     */
     private List<Product> productsInShop;
 
 
@@ -47,6 +52,35 @@ public class Shop {
         return products;
     }
 
+    /**
+     * Метод возвращающий товары с разбитием на страницы
+     * @param count количество элементов на странице
+     * @param page номер страницы ( нумерация с 0 )
+     * @return элементы на данной странице
+     */
+    public List<Product> getProducts(int count, int page){
+        int currentPage = 0;
+        int itemInPage = 0;
+        List<Product> productsInPage = new ArrayList<>();
+
+        for(Product product: productsInShop) {
+            itemInPage++;
+            System.out.println("Элемент №" + itemInPage);
+
+            if(itemInPage == count) {
+                System.out.println("Новая страница №" + currentPage);
+                currentPage++;
+                itemInPage = 0;
+            }
+
+            if(currentPage == page) {
+                System.out.println("элемент подходит");
+                productsInPage.add(product);
+            }
+        }
+
+        return productsInPage;
+    }
 
     public Product getBestTyre() {
         for(Product product: productsInShop) {
@@ -74,42 +108,33 @@ public class Shop {
     // |---------------------|___объект ArrayList(ссылка на продукт1)(ссылка на продукт2)___|----|__объект Product__|--|__объект Product__|--|__объект Product__|..--|
 
     public Shop() {
-        List<Product> products = new ArrayList<>();
-        Tyre p = new Tyre();
-        p.setName("Шина Cordiant");
-        p.setWidth(205);
-        p.setPrice("2960");
-        p.setHeight(55);
-
-        products.add(p);
-        products.add(new Disk("Диск LA MZ43",  7.5f));
-        products.add(new Battery("Аккумулятор Toplo"));
-        products.add(new Disk("Диск  x-Race AF-02", 6.0f));
-        products.add(new Tyre("Шина Goodyer Eagle",  185,70));
-        products.add(new Disk("Диск  Khomen Solaris",  6.0f));
-        products.add(new Tyre("Шина MAXXIS MT-764",  10.5f, 31));
-        products.add(new Tyre("Шина Mazzini Mud",  285, 70));
-        products.add(new Tyre("Шина Yokohama G075", 255, 50));
-        products.add(new Disk("Диск Alcasta M18",  6.5f));
-        products.add(new Disk("Диск Megami MGM-7",  6.0f));
-        products.add(new Battery("Аккумулятор Барс"));
-
-
         System.out.println("Создаётся магазин");
+        productsInShop = DB.getAllProducts();
+    }
 
-        productsInShop = products;
+    /**
+     * Метод возвращает список товаров содержащих в имени переданную строку
+     * @param partName строка по которой нужно осуществлять поиск
+     * @return возвращяем отфильтрованный список товаров
+     */
+    public List<Product> search(String partName){
+       List<Product> productsSearched = new ArrayList<>();
+       for (Product product: productsInShop){
+           if (product.getName().toLowerCase().contains(partName.toLowerCase())){
+               productsSearched.add(product);
+           }
+
+       }
+        return productsSearched;
+
     }
 
 
     public static void main(String[] args) {
         Shop shop = new Shop();
-//        for (Product product : shop.getSaleTop()) {
-//            System.out.println(product);
-//        }
-        for (Product product : shop.getSaleTop( 10, 1, 2)) {
+        for (Product product: shop.search("xx") ){
             System.out.println(product);
         }
 
-        System.out.println("Лучшая шина: " + shop.getBestTyre());
     }
 }
