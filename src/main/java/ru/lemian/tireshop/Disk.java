@@ -2,6 +2,7 @@ package ru.lemian.tireshop;
 
 import lombok.Getter;
 import lombok.Setter;
+import ru.lemian.tireshop.entity.Product;
 
 @Getter
 @Setter

@@ -1,17 +1,27 @@
 package ru.lemian.tireshop;
 
-import javafx.geometry.HorizontalDirection;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import ru.lemian.tireshop.entity.Product;
+import ru.lemian.tireshop.repository.ProductRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
+@RequiredArgsConstructor
 public class Shop {
+    private final ProductRepository repository;
+
     /**
      * Ссылка на список товаров в магазине в данном классе
      */
     private List<Product> productsInShop;
 
+    public Product addProduct(Product product) {
+        return repository.save(product);
+    }
 
     public List<Product> getSaleTop(int diskPosition, int batteryPosition, int tyrePosition) {
         List<Product> products = new ArrayList<>();
@@ -63,7 +73,7 @@ public class Shop {
         int itemInPage = 0;
         List<Product> productsInPage = new ArrayList<>();
 
-        for(Product product: productsInShop) {
+        for(Product product: repository.findAll()) {
             itemInPage++;
             System.out.println("Элемент №" + itemInPage);
 
@@ -107,11 +117,6 @@ public class Shop {
 
     // |---------------------|___объект ArrayList(ссылка на продукт1)(ссылка на продукт2)___|----|__объект Product__|--|__объект Product__|--|__объект Product__|..--|
 
-    public Shop() {
-        System.out.println("Создаётся магазин");
-        productsInShop = DB.getAllProducts();
-    }
-
     /**
      * Метод возвращает список товаров содержащих в имени переданную строку
      * @param partName строка по которой нужно осуществлять поиск
@@ -126,15 +131,6 @@ public class Shop {
 
        }
         return productsSearched;
-
-    }
-
-
-    public static void main(String[] args) {
-        Shop shop = new Shop();
-        for (Product product: shop.search("xx") ){
-            System.out.println(product);
-        }
 
     }
 }
