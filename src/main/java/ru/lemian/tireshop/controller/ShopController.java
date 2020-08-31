@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ShopController {
     private final Shop shop;
-    private final ProductRepository productRepository;
+    private final ProductRepository db;
 
     @GetMapping("/page")
     public List<Product> test(
@@ -25,17 +25,25 @@ public class ShopController {
 
     @GetMapping
     public List<Product> getAll() {
-        return productRepository.findAll();
+        return db.findAll();
     }
 
     @GetMapping("/one")
     public Product getProduct() {
-        return productRepository.findAll().get(0);
+        return db.findAll().get(0);
     }
 
     @PostMapping
-    public Product addProduct(@RequestBody Product product) {
-        return productRepository.save(product);
+    public Product addProduct(@RequestBody Product p) {
+        System.out.println(p);
+        String productName = p.getName();
+        Product tovar = db.getProductByName(p.getName());
+       if(tovar == null ) {
+           return db.save(p);
+       }else{
+           System.out.println("Товар есть " + tovar.getId());
+           return null;
+       }
     }
 }
 
